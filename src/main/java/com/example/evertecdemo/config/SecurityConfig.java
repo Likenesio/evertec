@@ -17,7 +17,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable()) // O usa csrf(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/clientes/registro", "/clientes/login").permitAll()
+                .requestMatchers("/clientes/register", "/clientes/login").permitAll()
                 .anyRequest().authenticated());
         return http.build();
     }
