@@ -1,44 +1,36 @@
 package com.example.evertecdemo.controllers;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.example.evertecdemo.dto.ClienteDTO;
 import com.example.evertecdemo.services.ClienteService;
-import com.example.evertecdemo.models.ClienteModel;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/clientes")
 public class ClienteController {
-    @Autowired
-    ClienteService clienteService;
 
-    @GetMapping()
-    public ArrayList<ClienteModel>obtenerCliente(){
-    return clienteService.obtenerCliente();
+    private final ClienteService clienteService;
+
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
     }
-    @PostMapping()
-    public ClienteModel registrarCliente(@RequestBody ClienteModel cliente) {
-        return clienteService.registrarCliente(cliente);
+
+    // Endpoint para registrar un nuevo cliente
+    @PostMapping("/registro")
+    public ResponseEntity<ClienteDTO> registrarCliente(@RequestBody ClienteDTO clienteDTO) {
+        ClienteDTO nuevoCliente = clienteService.registrarCliente(clienteDTO);
+        return new ResponseEntity<>(nuevoCliente, HttpStatus.CREATED);
     }
-    @GetMapping(path="/{id}")
-    public Optional<ClienteModel>obtenerClientePorId(@PathVariable("id") long id){
-        return this.clienteService.obtenerClientePorId(id);
-    }
-    @DeleteMapping(path ="/{id}")
-    public String eliminarCliente(@PathVariable("id") long id){
-        boolean respuesta = this.clienteService.eliminarCliente(id);
-        if (respuesta){
-            return "Cliente eliminado";
-            }else{
-                return "No se pudo eliminar el cliente";
-                }
+
+    // Endpoint para autenticar un cliente
+    @PostMapping("/login")
+    public ResponseEntity<String> autenticarCliente(@RequestBody ClienteDTO clienteDTO) {
+        boolean autenticado = clienteService.autenticarCliente(clienteDTO.getEmail(), clienteDTO.getPassword());
+        if (autenticado) {
+            return new ResponseEntity<>("Autenticación exitosa", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Credenciales incorrectas", HttpStatus.UNAUTHORIZED);
+        }
     }
 }
