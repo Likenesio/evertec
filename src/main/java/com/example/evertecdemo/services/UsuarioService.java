@@ -1,6 +1,7 @@
 package com.example.evertecdemo.services;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import com.example.evertecdemo.models.UsuarioModel;
 import com.example.evertecdemo.repositories.UsuarioRepository;
@@ -18,5 +19,16 @@ public class UsuarioService {
     }
     public UsuarioModel guardarUsuario(UsuarioModel usuario){
         return usuarioRepository.save(usuario); // se ocupa metodo save para guardar usuario
+    }
+    public Optional<UsuarioModel> obtenerUsuarioPorId(Long id){//servicio para obtener usuario por id
+        return usuarioRepository.findById(id);
+    }
+    public boolean eliminarUsuario(Long id){ //servicio para eliminar usuarios por id
+        try {
+            usuarioRepository.deleteById(id);
+            return true;
+            } catch (Exception err) {
+                return false;
+                }
     }
 }
