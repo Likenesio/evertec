@@ -21,12 +21,12 @@ public class ProductoController {
         return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/listar")
     public List<ProductoDTO> listarProductos() {
         return productoService.listarProductos();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/listar/{id}")
     public ProductoDTO obtenerProducto(@PathVariable Long id) {
         return productoService.obtenerProducto(id);
     }

@@ -20,14 +20,14 @@ public class PedidoController {
     }
 
     // Endpoint para crear un nuevo pedido
-    @PostMapping
+    @PostMapping("/nuevo")
     public ResponseEntity<PedidoDTO> crearPedido(@RequestBody PedidoDTO pedidoDTO) {
         PedidoDTO nuevoPedido = pedidoService.crearPedido(pedidoDTO);
         return new ResponseEntity<>(nuevoPedido, HttpStatus.CREATED);
     }
 
     // Endpoint para obtener un pedido por su ID
-    @GetMapping("/{id}")
+    @GetMapping("/listar/{id}")
     public ResponseEntity<PedidoDTO> obtenerPedido(@PathVariable Long id) {
         PedidoDTO pedido = pedidoService.obtenerPedido(id);
         return new ResponseEntity<>(pedido, HttpStatus.OK);
