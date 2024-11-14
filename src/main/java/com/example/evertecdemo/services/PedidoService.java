@@ -9,7 +9,6 @@ import com.example.evertecdemo.models.Producto;
 import com.example.evertecdemo.repositories.ClienteRepository;
 import com.example.evertecdemo.repositories.PedidoRepository;
 import com.example.evertecdemo.repositories.ProductoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -23,7 +22,6 @@ public class PedidoService {
     private final ClienteRepository clienteRepository;
     private final ProductoRepository productoRepository;
 
-    @Autowired
     public PedidoService(PedidoRepository pedidoRepository, ClienteRepository clienteRepository, ProductoRepository productoRepository) {
         this.pedidoRepository = pedidoRepository;
         this.clienteRepository = clienteRepository;

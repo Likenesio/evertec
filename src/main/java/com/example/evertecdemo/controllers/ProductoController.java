@@ -1,7 +1,6 @@
 package com.example.evertecdemo.controllers;
 
 import com.example.evertecdemo.dto.ProductoDTO;
-import com.example.evertecdemo.models.Producto;
 import com.example.evertecdemo.services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
