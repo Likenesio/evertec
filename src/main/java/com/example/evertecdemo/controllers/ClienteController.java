@@ -1,5 +1,7 @@
 package com.example.evertecdemo.controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,4 +35,8 @@ public class ClienteController {
             return new ResponseEntity<>("Credenciales incorrectas", HttpStatus.UNAUTHORIZED);
         }
     }
+    @GetMapping("/listar")
+    public List<ClienteDTO> obtenerCliente() {
+    return clienteService.obtenerCliente();
+}
 }

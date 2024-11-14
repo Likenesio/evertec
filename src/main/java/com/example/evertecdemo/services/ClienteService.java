@@ -5,6 +5,9 @@ import com.example.evertecdemo.exceptions.RecursoNoEncontradoException;
 import com.example.evertecdemo.models.Cliente;
 import com.example.evertecdemo.repositories.ClienteRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 @Service
@@ -31,6 +34,16 @@ public class ClienteService {
         Cliente cliente = clienteRepository.findByEmail(email)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Cliente no encontrado con email: " + email));
         return passwordEncoder.matches(password, cliente.getPassword());
+    }
+    public List<ClienteDTO> obtenerCliente() {
+    List<Cliente> clientes = clienteRepository.findAll(); // Obtener la lista de clientes
+    // Convertir cada Cliente a ClienteDTO usando un stream
+    return clientes.stream()
+                   .map(this::convertirAClienteDTO) // Llama al método de conversión
+                   .collect(Collectors.toList());
+    }
+    private ClienteDTO convertirAClienteDTO(Cliente cliente) {
+    return new ClienteDTO(cliente.getId(), cliente.getNombre(), cliente.getEmail(), cliente.getPassword());
     }
 }
 
