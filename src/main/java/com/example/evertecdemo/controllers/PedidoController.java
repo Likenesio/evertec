@@ -61,6 +61,5 @@ public class PedidoController {
     } catch (RecursoNoEncontradoException e) {
         return ResponseEntity.notFound().build();
     }
-}
-
+  }
 }

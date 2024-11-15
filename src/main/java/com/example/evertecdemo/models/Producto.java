@@ -11,6 +11,7 @@ public class Producto {
     private Long id;
     private String nombre;
     private Double precio;
+    private Integer stock;
     private String descripcion;
 
     @ManyToMany(mappedBy = "productos")
@@ -19,10 +20,11 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, Double precio, String descripcion, List<Pedido> pedidos) {
+    public Producto(Long id, String nombre, Double precio, String descripcion, Integer stock, List<Pedido> pedidos) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
+        this.stock = stock;
         this.descripcion = descripcion;
         this.pedidos = pedidos;
     }
@@ -58,6 +60,12 @@ public class Producto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+    public Integer getStock(){
+    return stock;
+    }
+    public void setStock(Integer stock) {
+        this.stock = stock;
+        }
 
     public List<Pedido> getPedidos() {
         return pedidos;

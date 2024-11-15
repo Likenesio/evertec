@@ -11,10 +11,10 @@ import com.example.evertecdemo.repositories.PedidoRepository;
 import com.example.evertecdemo.repositories.ProductoRepository;
 import org.springframework.stereotype.Service;
 
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class PedidoService {
 
@@ -22,7 +22,8 @@ public class PedidoService {
     private final ClienteRepository clienteRepository;
     private final ProductoRepository productoRepository;
 
-    public PedidoService(PedidoRepository pedidoRepository, ClienteRepository clienteRepository, ProductoRepository productoRepository) {
+    public PedidoService(PedidoRepository pedidoRepository, ClienteRepository clienteRepository,
+            ProductoRepository productoRepository) {
         this.pedidoRepository = pedidoRepository;
         this.clienteRepository = clienteRepository;
         this.productoRepository = productoRepository;
@@ -31,7 +32,8 @@ public class PedidoService {
     // Método para crear un nuevo pedido
     public PedidoDTO crearPedido(PedidoDTO pedidoDTO) {
         Cliente cliente = clienteRepository.findById(pedidoDTO.getClienteId())
-                .orElseThrow(() -> new RecursoNoEncontradoException("Cliente no encontrado con id: " + pedidoDTO.getClienteId()));
+                .orElseThrow(() -> new RecursoNoEncontradoException(
+                        "Cliente no encontrado con id: " + pedidoDTO.getClienteId()));
 
         // Mapeo de productos del pedido
         List<Producto> productos = pedidoDTO.getProductosIds().stream()
@@ -48,7 +50,8 @@ public class PedidoService {
 
         pedidoRepository.save(pedido);
 
-        return new PedidoDTO(pedido.getId(), pedido.getCliente().getId(), pedido.getEstado().toString(), pedido.getProductos().stream().map(Producto::getId).collect(Collectors.toList()));
+        return new PedidoDTO(pedido.getId(), pedido.getCliente().getId(), pedido.getEstado().toString(),
+                pedido.getProductos().stream().map(Producto::getId).collect(Collectors.toList()));
     }
 
     // Método para obtener un pedido por ID
@@ -56,7 +59,8 @@ public class PedidoService {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Pedido no encontrado con id: " + id));
 
-        return new PedidoDTO(pedido.getId(), pedido.getCliente().getId(), pedido.getEstado().toString(), pedido.getProductos().stream().map(Producto::getId).collect(Collectors.toList()));
+        return new PedidoDTO(pedido.getId(), pedido.getCliente().getId(), pedido.getEstado().toString(),
+                pedido.getProductos().stream().map(Producto::getId).collect(Collectors.toList()));
     }
 
     // Método para listar todos los pedidos de un cliente
@@ -65,7 +69,8 @@ public class PedidoService {
                 .orElseThrow(() -> new RecursoNoEncontradoException("Cliente no encontrado con id: " + clienteId));
 
         return pedidoRepository.findByClienteId(clienteId).stream()
-                .map(pedido -> new PedidoDTO(pedido.getId(), pedido.getCliente().getId(), pedido.getEstado().toString(), pedido.getProductos().stream().map(Producto::getId).collect(Collectors.toList())))
+                .map(pedido -> new PedidoDTO(pedido.getId(), pedido.getCliente().getId(), pedido.getEstado().toString(),
+                        pedido.getProductos().stream().map(Producto::getId).collect(Collectors.toList())))
                 .collect(Collectors.toList());
     }
 
@@ -77,23 +82,17 @@ public class PedidoService {
         pedido.setEstado(nuevoEstado);
         pedidoRepository.save(pedido);
 
-        return new PedidoDTO(pedido.getId(), pedido.getCliente().getId(), pedido.getEstado().toString(), pedido.getProductos().stream().map(Producto::getId).collect(Collectors.toList()));
+        return new PedidoDTO(pedido.getId(), pedido.getCliente().getId(), pedido.getEstado().toString(),
+                pedido.getProductos().stream().map(Producto::getId).collect(Collectors.toList()));
     }
-
- /*    // Método para eliminar un pedido
-    public void cancelarPedido(Long id) {
-        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Pedido no encontrado con id: " + id));
-        pedidoRepository.delete(pedido);
-    } */
     // Método para cancelar un pedido
-     public void cancelarPedido(Long id) {
+    public void cancelarPedido(Long id) {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Pedido no encontrado con id: " + id));
-    
+
         if (!pedido.getEstado().equals(EstadoPedido.PENDIENTE)) {
             throw new IllegalArgumentException("Solo se pueden cancelar pedidos en estado PENDIENTE.");
         }
-    
         // Cambiar el estado a CANCELADO
         pedido.setEstado(EstadoPedido.CANCELADO);
         pedidoRepository.save(pedido);
