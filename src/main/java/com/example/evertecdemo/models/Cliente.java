@@ -13,7 +13,10 @@ public class Cliente {
     @Column(unique = true, nullable = false) // id unica, inclemental y no null
     private Long id;
     private String nombre;
+
+    @Column(unique = true)  // El email debe ser único
     private String email;
+    
     private String password;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)

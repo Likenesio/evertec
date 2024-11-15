@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.evertecdemo.dto.PedidoDTO;
+import com.example.evertecdemo.exceptions.RecursoNoEncontradoException;
 import com.example.evertecdemo.models.EstadoPedido;
 import com.example.evertecdemo.services.PedidoService;
 
@@ -40,17 +41,26 @@ public class PedidoController {
         return new ResponseEntity<>(pedidos, HttpStatus.OK);
     }
 
-    // Endpoint para actualizar el estado de un pedido
+    // Endpoint para actualizar el estado de un pedido con path
     @PatchMapping("/{id}/estado")
-    public ResponseEntity<PedidoDTO> actualizarEstadoPedido(@PathVariable Long id, @RequestParam EstadoPedido estado) {
+    public ResponseEntity<PedidoDTO> actualizarEstadoPedido(
+            @PathVariable Long id,
+            @RequestParam EstadoPedido estado) {
+        
         PedidoDTO pedidoActualizado = pedidoService.actualizarEstadoPedido(id, estado);
         return new ResponseEntity<>(pedidoActualizado, HttpStatus.OK);
     }
-
     // Endpoint para cancelar un pedido
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> cancelarPedido(@PathVariable Long id) {
+    @DeleteMapping("/{id}/cancelar")
+    public ResponseEntity<String> cancelarPedido(@PathVariable Long id) {
+    try {
         pedidoService.cancelarPedido(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok("Pedido cancelado exitosamente.");
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    } catch (RecursoNoEncontradoException e) {
+        return ResponseEntity.notFound().build();
     }
+}
+
 }

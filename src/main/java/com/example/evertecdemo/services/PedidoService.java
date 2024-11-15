@@ -80,11 +80,22 @@ public class PedidoService {
         return new PedidoDTO(pedido.getId(), pedido.getCliente().getId(), pedido.getEstado().toString(), pedido.getProductos().stream().map(Producto::getId).collect(Collectors.toList()));
     }
 
-    // Método para eliminar un pedido
+ /*    // Método para eliminar un pedido
     public void cancelarPedido(Long id) {
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new RecursoNoEncontradoException("Pedido no encontrado con id: " + id));
+        pedidoRepository.delete(pedido);
+    } */
+    // Método para cancelar un pedido
+     public void cancelarPedido(Long id) {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Pedido no encontrado con id: " + id));
-
-        pedidoRepository.delete(pedido);
+    
+        if (!pedido.getEstado().equals(EstadoPedido.PENDIENTE)) {
+            throw new IllegalArgumentException("Solo se pueden cancelar pedidos en estado PENDIENTE.");
+        }
+    
+        // Cambiar el estado a CANCELADO
+        pedido.setEstado(EstadoPedido.CANCELADO);
+        pedidoRepository.save(pedido);
     }
 }
