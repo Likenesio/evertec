@@ -6,15 +6,17 @@ public class ProductoDTO {
     private Double precio;
     private String descripcion;
     private Integer stock;
+    private String categoria;
 
     public ProductoDTO() {
     }
 
-    public ProductoDTO(Long id, String nombre, Double precio, String descripcion, Integer stock) {
+    public ProductoDTO(Long id, String nombre, Double precio, String descripcion, Integer stock, String categoria) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.descripcion = descripcion;
+        this.categoria = categoria;
         this.stock = stock;
     }
 
@@ -58,6 +60,14 @@ public class ProductoDTO {
         this.stock = stock;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
     @Override
     public String toString() {
         return "ProductoDTO{" +
@@ -65,6 +75,7 @@ public class ProductoDTO {
                 ", nombre='" + nombre + '\'' +
                 ", precio=" + precio + '\'' +
                 ", stock=" + stock + '\'' +
+                ", categoria=" + categoria + '\'' +
                 ", descripcion='" + descripcion +
                 '}';
     }

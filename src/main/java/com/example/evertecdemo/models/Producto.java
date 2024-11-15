@@ -10,6 +10,7 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
+    private String categoria;
     private Double precio;
     private Integer stock;
     private String descripcion;
@@ -20,12 +21,14 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, Double precio, String descripcion, Integer stock, List<Pedido> pedidos) {
+    public Producto(Long id, String nombre, Double precio, String descripcion, Integer stock, String categoria,
+            List<Pedido> pedidos) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
         this.descripcion = descripcion;
+        this.categoria = categoria;
         this.pedidos = pedidos;
     }
 
@@ -60,12 +63,22 @@ public class Producto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    public Integer getStock(){
-    return stock;
+
+    public Integer getStock() {
+        return stock;
     }
+
     public void setStock(Integer stock) {
         this.stock = stock;
-        }
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
 
     public List<Pedido> getPedidos() {
         return pedidos;
@@ -80,7 +93,9 @@ public class Producto {
         return "Producto{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", precio=" + precio +
+                ", precio=" + precio + '\'' +
+                ", categoria='" + categoria + '\'' +
+                ", stock='" + stock + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 ", pedidos=" + pedidos +
                 '}';

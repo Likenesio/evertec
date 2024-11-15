@@ -26,24 +26,27 @@ public class ProductoService {
         producto.setPrecio(productoDTO.getPrecio());
         producto.setStock(productoDTO.getStock());
         producto.setDescripcion(productoDTO.getDescripcion());
+        producto.setCategoria(productoDTO.getCategoria());
 
         // Guardar el producto en la base de datos
         productoRepository.save(producto);
 
         // Retornar el producto creado como DTO
-        return new ProductoDTO(producto.getId(), producto.getNombre(), producto.getPrecio(), producto.getDescripcion(), producto.getStock());
+        return new ProductoDTO(producto.getId(), producto.getNombre(), producto.getPrecio(), producto.getDescripcion(),
+                producto.getStock(), producto.getCategoria());
     }
 
     public List<ProductoDTO> listarProductos() {
         return productoRepository.findAll().stream()
-                .map(producto -> new ProductoDTO(producto.getId(), producto.getNombre(), producto.getPrecio(), producto.getDescripcion(), producto.getStock()))
+                .map(producto -> new ProductoDTO(producto.getId(), producto.getNombre(), producto.getPrecio(),
+                        producto.getDescripcion(), producto.getStock(), producto.getCategoria()))
                 .collect(Collectors.toList());
     }
 
     public ProductoDTO obtenerProducto(Long id) {
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Producto no encontrado con id: " + id));
-        return new ProductoDTO(producto.getId(), producto.getNombre(), producto.getPrecio(), producto.getDescripcion(), producto.getStock());
+        return new ProductoDTO(producto.getId(), producto.getNombre(), producto.getPrecio(), producto.getDescripcion(),
+                producto.getStock(), producto.getCategoria());
     }
 }
-

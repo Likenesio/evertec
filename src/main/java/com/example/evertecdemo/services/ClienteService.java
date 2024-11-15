@@ -26,9 +26,15 @@ public class ClienteService {
         Cliente cliente = new Cliente();
         cliente.setNombre(clienteDTO.getNombre());
         cliente.setEmail(clienteDTO.getEmail());
+        cliente.setApellido(clienteDTO.getApellido());
+        cliente.setTelefono(clienteDTO.getTelefono());
+        cliente.setDireccion(clienteDTO.getDireccion());
+        cliente.setComuna(clienteDTO.getComuna());
         cliente.setPassword(passwordEncoder.encode(clienteDTO.getPassword()));
+
         clienteRepository.save(cliente);
-        return new ClienteDTO(cliente.getId(), cliente.getNombre(), cliente.getEmail(), cliente.getPassword());
+        return new ClienteDTO(cliente.getId(), cliente.getNombre(), cliente.getEmail(), cliente.getPassword(),
+                cliente.getTelefono(), cliente.getDireccion(), cliente.getComuna(), cliente.getApellido());
     }
 
     public boolean autenticarCliente(String email, String password) {
@@ -46,6 +52,7 @@ public class ClienteService {
     }
 
     private ClienteDTO convertirAClienteDTO(Cliente cliente) {
-        return new ClienteDTO(cliente.getId(), cliente.getNombre(), cliente.getEmail(), cliente.getPassword());
+        return new ClienteDTO(cliente.getId(), cliente.getNombre(), cliente.getEmail(), cliente.getPassword(),
+                cliente.getTelefono(), cliente.getDireccion(), cliente.getComuna(), cliente.getApellido());
     }
 }
